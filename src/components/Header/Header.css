@@ -1,0 +1,11 @@
+/* HEADER */
+header {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .banner-container {
+    padding: 20px 0;
+    flex-basis: 80%;
+  }
+  /* END HEADER */

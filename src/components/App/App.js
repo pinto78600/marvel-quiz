@@ -10,11 +10,13 @@ import Signup from '../Signup/Signup';
 import Welcome from '../Welcome/Welcome';
 import Footer from '../Footer/Footer';
 import ForgetPassword from '../forgetPassword/ForgetPassword';
+import { IconContext } from 'react-icons';
 
 
 function App() {
   return (
     <Router>
+      <IconContext.Provider value={{ style: { verticalAlign: 'middle' } }}>
         <Header />
 
         <Switch>
@@ -27,6 +29,7 @@ function App() {
         </Switch>
 
         <Footer />
+      </IconContext.Provider>
     </Router>
   );
 }

@@ -1,6 +1,8 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'
 import { FirebaseContext } from '../Firebase/Index';
+import { verifyCode } from '../errorMessage/errorMessage'
+
 
 const Signup = (props) => {
 
@@ -16,30 +18,66 @@ const Signup = (props) => {
     
     const [loginData, setLoginData ] = useState(data);
     const [error, setError] = useState('');
+    const [ pseudoUsed, setPseudoUsed ] = useState(false);
     
     const { pseudo, email, password, confirmPassword } = loginData
+    const messagePseudoUsed = 'Ce pseudo est déjà utilisé.'
     const handleChange = e => {
         setLoginData({...loginData, [e.target.id] : e.target.value})
     };
 
+    const getPseudoUsed = name  => {
+        firebase.scoreAll().get().then( test => {
+            const tempDoc = []
+                test.forEach( n => {
+                    tempDoc.push({pseu : n.data().pseudo })
+                  if(tempDoc.find( arrayName => arrayName.pseu === name)){
+                      setPseudoUsed(true);
+                  }else{
+                    setPseudoUsed(false)
+                  }
+                })
+            })
+    }
+
+    const createFirestoreUser = (pseudo, sid) => {
+        firebase.score(sid).set({
+            pseudo,
+            totalScore : 0,
+            level : 1
+        });
+    }
+
+    useEffect(() => {
+        getPseudoUsed(pseudo);
+    },[])
+    
     const handleSubmit = e => {
         const { pseudo, email, password } = loginData
         e.preventDefault();
-        firebase.signupUser(email, password)
-        .then(authUser => {
-            return firebase.user(authUser.user.uid).set({
-                pseudo,
-                email
-            });
-        })
-        .then(() => {
-            setLoginData({...data});
-            props.history.push('/welcome');
-        })
-        .catch(error => {
-            setError(error);
-            setLoginData({...data});
-        })
+        if(!pseudoUsed){
+            firebase.signupUser(email, password)
+            .then(authUser => {
+                createFirestoreUser(pseudo, authUser.user.uid)
+                return firebase.user(authUser.user.uid).set({
+                    pseudo,
+                    email
+                });
+            })
+            .then(() => {
+                setLoginData({...data});
+                props.history.push('/welcome');
+            })
+            .catch(error => {
+                let errorMessage = verifyCode(error.code)
+    
+                setError(errorMessage);
+                setLoginData({...data});
+            })
+        }else{
+            setError(messagePseudoUsed)
+            setLoginData({...data})
+        }
     };
 
     const btn = pseudo === '' || email === '' || password === '' || password !== confirmPassword
@@ -47,7 +85,7 @@ const Signup = (props) => {
 
     //gestion erreurs
     const errorMsg = error !== '' && <span>
-        {error.message}
+        {error}
     </span>
 
     return(

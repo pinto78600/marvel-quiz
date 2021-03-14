@@ -3,14 +3,14 @@ import 'firebase/auth';
 import 'firebase/firestore';
 
 const config = {
-    apiKey: "AIzaSyDOnnVuTkjnAXua0wUbeXbMD8QnCMIcSpk",
-    authDomain: "marvel-quiz-c9b50.firebaseapp.com",
-    projectId: "marvel-quiz-c9b50",
-    storageBucket: "marvel-quiz-c9b50.appspot.com",
-    messagingSenderId: "323032880190",
-    appId: "1:323032880190:web:a92f9bb59372dd46a56d6f"
+    apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+    authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId:process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID ,
+    appId: process.env.REACT_APP_FIREBASE_APP_ID
   };
-
+  
 class Firebase {
     constructor(){
         app.initializeApp(config);
@@ -29,11 +29,18 @@ class Firebase {
     //deconnexion
     signoutUser = () => this.auth.signOut();
 
-    //Récupérer le mot de passe
+    //get password
     passwordReset = email => this.auth.sendPasswordResetEmail(email);
 
-   //firestore
+   //firestore user
     user = uid =>  this.db.doc(`users/${uid}`);
+
+   //firestore set score
+   score = sid => this.db.doc(`score/${sid}`);
+
+   //firestore array score 
+   scoreAll = () => this.db.collection('score');
+
 
 }
 

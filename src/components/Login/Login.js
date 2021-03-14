@@ -1,12 +1,14 @@
 import React, { useEffect, useState , useContext} from 'react';
 import { Link } from 'react-router-dom';
 import { FirebaseContext } from '../Firebase/Index';
+import { verifyCode } from '../errorMessage/errorMessage'
 
 
 
 const Login = (props) => {
 
     const firebase = useContext(FirebaseContext);
+    const test = useContext(verifyCode);
 
 
     const [email, setEmail] = useState('');
@@ -31,7 +33,9 @@ const Login = (props) => {
             props.history.push('/welcome');
         })
         .catch(error => {
-            setError(error);
+            let errorMessage = verifyCode(error.code)
+
+            setError(errorMessage);
             setEmail('');
             setPassword('');
         })
@@ -39,7 +43,7 @@ const Login = (props) => {
 
      //gestion erreurs
      const errorMsg = error !== '' && <span>
-     {  error.message}
+     {  error}
     </span>
 
     return(

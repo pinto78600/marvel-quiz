@@ -1,0 +1,56 @@
+/* WELCOME PAGE */
+.welcomePage {
+    background-image:url(../../images/cage1.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+    display: flex;
+    justify-content: space-between;
+    height: 600px;
+    width: 100%; 
+  }
+  
+  .startingImg {
+    background-image: url(../../images/cage2.png);
+  }
+  
+  .leftImg{
+    background-image: url(../../images/shotLeft.png), url(../../images/gkpl.png), url(../../images/emptyBall2.png), url(../../images/cage.png);
+    background-position: center center;
+
+  }
+  .rightImg{
+    background-image:url(../../images/shotRight.png),url(../../images/gkpr.png), url(../../images/emptyBall3.png), url(../../images/cage.png)
+  }
+  
+  /* .leftBox {
+    display: flex;
+    flex: 0 1 35%;
+    align-items: flex-start;
+    justify-content: flex-end;
+  }
+  
+  .rightBox {
+    display: flex;
+    flex: 0 1 35%;
+    align-items: flex-start;
+  } */
+  
+  .btn-welcome {
+    border: 2px solid var(--white-color);
+    color: var(--white-color);
+    padding: 12px 25px;
+    border-radius: 5px;
+    background-color: transparent;
+    font-weight: normal;
+    font-size: 19px;
+    text-align: center;
+    text-decoration: none;
+    margin-top: 150px;
+  }
+  
+  .btn-welcome:hover {
+    border: 2px solid var(--white-color);
+    color: var(--red-color);
+    background-color: var(--white-color);
+  }
+  /* END WELCOME PAGE */

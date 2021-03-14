@@ -1,5 +1,7 @@
 import React from 'react';
-import batman from '../../images/batman.png';
+import chan from '../../images/jacky.png';
+
+import './ErrorPage.css'
 
 const ErrorPage = () => {
 
@@ -10,13 +12,13 @@ const ErrorPage = () => {
 
     const centerImg = {
         display: 'block',
-        margin: "40px auto"
+        margin: "20px auto"
     }
     return(
         <div className="quiz-bg">
            <div className="container">
                 <h2 style={centerH2} >Oups cette page n'existe pas</h2>
-                <img src={batman} style={centerImg} alt='image' />
+                <img src={chan} style={centerImg} alt='image' />
            </div>
         </div>   
     )

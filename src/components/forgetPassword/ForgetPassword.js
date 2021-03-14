@@ -1,6 +1,8 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { FirebaseContext } from '../Firebase/Index';
+import { verifyCode } from '../errorMessage/errorMessage'
+
 
 
 const ForgetPassword = props => {
@@ -14,7 +16,6 @@ const ForgetPassword = props => {
         e.preventDefault();
         firebase.passwordReset(email)
         .then(() => {
-            console.log(email);
             setError(null);
             setSuccess(`Un nouveau mot de passe vous a été envoyé sur ${email}`);
             setEmail('');
@@ -24,7 +25,9 @@ const ForgetPassword = props => {
             }, 4000)
         })
         .catch(error => {
-            setError(error);
+            let errorMessage = verifyCode(error.code)
+
+            setError(errorMessage);
             setEmail('');
         })
     };
@@ -50,7 +53,7 @@ const ForgetPassword = props => {
                     
                 </span>}
 
-                {error && <span>{error.message}</span>}
+                {error && <span>{error}</span>}
 
                  <h2>Mot de passe oublié?</h2>
                  <form onSubmit={handleSubmit}>
