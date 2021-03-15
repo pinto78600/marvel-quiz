@@ -313,42 +313,47 @@ const QuizOver = props => {
                 )
             break;
             case 'coachs':
-                let arrayCareer = footballData.response[0].career
-                resultModalData = 
-                !loadingData  ? (
-                    <>
-                        <div className='modalHeader'>
-                            <h2>{footballData.response[0].name}</h2>
-                        </div>
-                        <div className='modalBody'>
-                            <div className="comicImage">
-                                <img 
-                                    src={footballData.response[0].team.logo} 
-                                    alt={footballData.response[0].team.name} 
-                                />
-                            </div>
-                            <div className="comicDetails">
-                                <h3>Description</h3>
-                                <p>Il est né le : {footballData.response[0].birth.date} ( {footballData.response[0].age} ans)</p>
-                                <p>Lieu naissance : {footballData.response[0].birth.place} ({footballData.response[0].birth.country})</p>
-                                <p>Nationalité : {footballData.response[0].nationality}</p>
-                                <div>
-                                    Carrière : { arrayCareer.map((team, index) => {
-                                        return(
-                                            <p key={index} >{team.team.name}({team.start})</p>
 
-                                        )
-                                    })
-                                }
+                if(!loadingData){
+                    let arrayCareer = footballData.response[0].career
+
+                    resultModalData = 
+                   
+                        <>
+                            <div className='modalHeader'>
+                                <h2>{footballData.response[0].name}</h2>
+                            </div>
+                            <div className='modalBody'>
+                                <div className="comicImage">
+                                    <img 
+                                        src={footballData.response[0].team.logo} 
+                                        alt={footballData.response[0].team.name} 
+                                    />
+                                </div>
+                                <div className="comicDetails">
+                                    <h3>Description</h3>
+                                    <p>Il est né le : {footballData.response[0].birth.date} ( {footballData.response[0].age} ans)</p>
+                                    <p>Lieu naissance : {footballData.response[0].birth.place} ({footballData.response[0].birth.country})</p>
+                                    <p>Nationalité : {footballData.response[0].nationality}</p>
+                                    <div>
+                                        Carrière : { arrayCareer.map((team, index) => {
+                                            return(
+                                                <p key={index} >{team.team.name}({team.start})</p>
+    
+                                            )
+                                        })
+                                    }
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </>
+                    
+                }else{
+                    <>
+                        {loaderApiFootball}
                     </>
-                )
-                :
-                (
-                    loaderApiFootball
-                )
+                }
+                
                 break;
                 case 'venues':
 
