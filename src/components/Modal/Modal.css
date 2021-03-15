@@ -35,7 +35,7 @@
   .modalBody {
     padding: 30px 10px;
     background: var(--white-color);
-    height: 400px;
+    height: 300px;
     overflow: auto;
   
     display: flex;
@@ -122,4 +122,11 @@
     color: var(--white-color);
     border: 1px solid var(--light-grey-color);
   }
+
+  @media screen and (max-width: 640px) {
+    .modalBody{
+      height: 500px;
+    }
+  }
+
   /* END MODAL */

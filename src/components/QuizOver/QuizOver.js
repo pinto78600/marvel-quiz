@@ -64,7 +64,7 @@ const QuizOver = props => {
             localStorage.setItem('soccerStrorageDate', Date.now());
         }
     }
-
+    
 
     const showModal = (id, type, season) => {
         setOpenModal(true);
@@ -85,21 +85,25 @@ const QuizOver = props => {
             })
             .then(res => {
                 setfootballData(res.data)
-                setLoadingData(false)
-                localStorage.setItem(id, JSON.stringify(res.data));
+
                 if(!localStorage.getItem('marvelStrorageDate')){
                     localStorage.setItem('marvelStrorageDate', Date.now());
+                }
+                if(res.data.response.length !== 0){
+                setLoadingData(false);
+                localStorage.setItem(id, JSON.stringify(res.data));
                 }
             })
             .catch(err => {
                 console.log(err);
+                setLoadingData(true);
             })
             
         }
         
     }
  
-    const hideModal = id => {
+    const hideModal = () => {
         setOpenModal(false)
         setLoadingData(true)
     }
@@ -111,6 +115,9 @@ const QuizOver = props => {
             </div>
             <div className='modalBody'>
                 <Loader/>
+                <div className='modalFooter'>
+                    <button className="modalBtn" onClick={hideModal}>Fermer</button>
+                </div>
             </div>
         </>
     
@@ -118,44 +125,44 @@ const QuizOver = props => {
 
         <>
             
-                {
-                    quizLevel < levelNames.length ?
-                    (
-                        <>  
-                            <div className="stepsBtnContainer">
-                                <div>
-                                    <img src={mbappe} />
-                                    <p className="successMsg">Bravo, passez au niveau suivant!</p>
+            {
+                quizLevel < levelNames.length ?
+                (
+                    <>  
+                        <div className="stepsBtnContainer">
+                            <div>
+                                <img src={mbappe} />
+                                <p className="successMsg">Bravo, passez au niveau {quizLevel + 1} !</p>
 
-                                </div>
-                                <button 
-                                    onClick={() =>loadLevelQuestions(quizLevel)}
-                                    className="btnResult success">
-                                        Niveau Suivant
-                                </button>
                             </div>
-                        </>
+                            <button 
+                                onClick={() =>loadLevelQuestions(quizLevel)}
+                                className="btnResult success">
+                                    Niveau Suivant
+                            </button>
+                        </div>
+                    </>
                         
-                    )
-                    :
-                    (
-                        <>
-                             <div className='trophyEnd'>
-                                <h1>Félicitation !!!</h1>
-                                <p>{pseudo}</p>
-                            </div>
-                            <div className="stepsBtnContainer">
+                )
+                :
+                (
+                    <>
+                        <div className='trophyEnd'>
+                            <h1>Félicitation !!!</h1>
+                            <p>{pseudo}</p>
+                        </div>
+                        <div className="stepsBtnContainer">
 
-                                <p className="successMsg"><GiTrophyCup size='50px'/> Bravo, vous êtes un expert !!</p>
-                                <button 
-                                    onClick={() =>loadLevelQuestions(0)}
-                                    className="btnResult gameOver">
-                                        Accueil
-                                </button>
-                            </div>
-                        </>
-                    )
-                }
+                            <p className="successMsg"><GiTrophyCup size='50px'/> Bravo, vous êtes un expert !!</p>
+                            <button 
+                                onClick={() =>loadLevelQuestions(0)}
+                                className="btnResult gameOver">
+                                    Accueil
+                            </button>
+                        </div>
+                    </>
+                )
+            }
             <div className="percentage" >
                 <div className="progressPercent">Réussite: {percent}%</div>
                 <div className="progressPercent">Note: {score}/{maxQuestions}</div>
@@ -203,7 +210,7 @@ const QuizOver = props => {
     (
         <tr>
             <td colSpan="3" style={{textAlign : 'center', color: 'red'}}>
-                    Votre score est {score} pts { quizLevel !== 9 ? `et pour passer au niveau ${quizLevel + 1}` : '' } il faut un réussir au minimum {averageGrade} pts    
+                    Votre score est de {score} pts { quizLevel !== 9 ? `et pour passer au niveau ${quizLevel + 1}` : '' } il faut un réussir au minimum {averageGrade} pts    
             </td>
         </tr>
     )
@@ -237,18 +244,15 @@ const QuizOver = props => {
         })
     )
 
-    let resultModalData = ''
+    let resultModalData = '';
     switch (typeData) {
         case 'players':
             if(!loadingData){
               const date = footballData.response[0].player.birth.date 
             
             resultModalData = 
-            
-                 
                 <>
-                    
-                        <div className='modalHeader'>
+                    <div className='modalHeader'>
                         <h2>{footballData.response[0].player.name}</h2>
                     </div>
                     <div className='modalBody'>
@@ -277,8 +281,6 @@ const QuizOver = props => {
                     {loaderApiFootball}
                 </>
             }
-            
-            
             break;
             case 'teams':
 
@@ -305,18 +307,17 @@ const QuizOver = props => {
                     </div>
                 </>
                 )
-            :
-            (
-                loaderApiFootball
-            )
+                :
+                (
+                    loaderApiFootball
+                )
             break;
             case 'coachs':
                 let arrayCareer = footballData.response[0].career
                 resultModalData = 
                 !loadingData  ? (
                     <>
-                        
-                            <div className='modalHeader'>
+                        <div className='modalHeader'>
                             <h2>{footballData.response[0].name}</h2>
                         </div>
                         <div className='modalBody'>
@@ -332,7 +333,7 @@ const QuizOver = props => {
                                 <p>Lieu naissance : {footballData.response[0].birth.place} ({footballData.response[0].birth.country})</p>
                                 <p>Nationalité : {footballData.response[0].nationality}</p>
                                 <div>
-                                    carriere(début) : { arrayCareer.map((team, index) => {
+                                    Carrière : { arrayCareer.map((team, index) => {
                                         return(
                                             <p key={index} >{team.team.name}({team.start})</p>
 
@@ -354,8 +355,7 @@ const QuizOver = props => {
                 resultModalData = 
                 !loadingData  ? (
                     <>
-                        
-                            <div className='modalHeader'>
+                        <div className='modalHeader'>
                             <h2>{footballData.response[0].name}</h2>
                         </div>
                         <div className='modalBody'>
@@ -390,9 +390,9 @@ const QuizOver = props => {
 
             {resultModalData}
 
-        <div className='modalFooter'>
-            <button className="modalBtn" onClick={hideModal}>Fermer</button>
-        </div>
+            <div className='modalFooter'>
+                <button className="modalBtn" onClick={hideModal}>Fermer</button>
+            </div>
         </>   
     )
     :

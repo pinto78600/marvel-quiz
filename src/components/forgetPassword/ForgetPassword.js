@@ -32,7 +32,7 @@ const ForgetPassword = props => {
         })
     };
 
-    const disabled = email === ""
+    const disabled = email === "";
 
 
     return(

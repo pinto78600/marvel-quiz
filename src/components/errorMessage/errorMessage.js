@@ -12,7 +12,7 @@ const verifyCode = errorCode => {
             case 'auth/user-not-found':
                 return "Il n'y a pas d'enregistrement d'utilisateur correspondant à cet identifiant. L'utilisateur a peut-être été supprimé";
             case 'auth/weak-password':
-                return 'Le mot de passe est très faible.';
+                return 'Le mot de passe est très faible (min 6 caractères).';
             case 'auth/email-already-in-use':
                 return "Un compte existe déjà avec l'adresse e-mail que vous avez fournie.";
             case 'auth/invalid-email':

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, useContext } from 'react';
-import Levels from '../Levels/Levels';
+import Countdown from '../Countdown/Countdown';
 import { FirebaseContext } from '../Firebase/Index';
+import Levels from '../Levels/Levels';
 
 import ProgressBar from '../ProgressBar/ProgressBar';
 import { quizSoccer } from '../QuizSoccer/QuizSoccer';
@@ -8,12 +9,8 @@ import Questions from '../Questions/Questions';
 import QuizOver from '../QuizOver/QuizOver';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Countdown from '../Countdown/Countdown';
-
-
 
 toast.configure();
-
 
 
 const Quiz = props => {
@@ -76,52 +73,49 @@ const Quiz = props => {
                 }
             }
     })
-
-}
-
-const getRanking = () => {
-
-    firebase.scoreAll().get().then((querySnapshot) => { 
-        const tempDoc = []
-        querySnapshot.forEach( doc  => {
-            const getPseudoData = doc.data().pseudo;
-            const getTotalScore = doc.data().totalScore;
-            const getLevel = doc.data().level;
-            tempDoc.push({pseudo : getPseudoData, score : getTotalScore, level : getLevel })
-            tempDoc.sort((a, b) =>  b.score - a.score);
-            setArrayScore(tempDoc)
-            
-        });
-        
     }
-    )
-    .catch(err => {
-        console.log(err);
-    })
-}
+
+    const getRanking = () => {
+
+        firebase.scoreAll().get().then((querySnapshot) => { 
+            const tempDoc = []
+            querySnapshot.forEach( doc  => {
+                const getPseudoData = doc.data().pseudo;
+                const getTotalScore = doc.data().totalScore;
+                const getLevel = doc.data().level;
+                tempDoc.push({pseudo : getPseudoData, score : getTotalScore, level : getLevel })
+                tempDoc.sort((a, b) =>  b.score - a.score);
+                setArrayScore(tempDoc)
+            
+            });
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    }
 
 
-const welcomeMsg = pseudo => {
-    
-    toast.warn(`C'est parti ${pseudo} !`, {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
+    const welcomeMsg = pseudo => {
+        
+        toast.warn(`C'est parti ${pseudo} !`, {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: false,
         });
     }
     
     useEffect(() => {
         loadQuestion(levelNames[quizLevel]);
-        setRanking()
-        getRanking()
+        setRanking();
+        getRanking();
         
-            if(pseudo && toastPseudo) {
-                setToastPseudo(false)
-                welcomeMsg(pseudo)
-            }
+        if(pseudo && toastPseudo) {
+            setToastPseudo(false)
+            welcomeMsg(pseudo)
+        }
     
     }, [pseudo, totalScore]);
     
@@ -138,7 +132,7 @@ const welcomeMsg = pseudo => {
             toast.success(`Bonne réponse ${props.userData.pseudo} !`, {
                 position: "top-right",
                 autoClose: 3000,
-                hideProgressBar: false,
+                hideProgressBar: true,
                 closeOnClick: true,
                 pauseOnHover: true,
                 draggable: false,
@@ -147,7 +141,7 @@ const welcomeMsg = pseudo => {
             toast.error('Mauvaise réponse!', {
                 position: "top-right",
                 autoClose: 3000,
-                hideProgressBar: false,
+                hideProgressBar: true,
                 closeOnClick: true,
                 pauseOnHover: true,
                 draggable: false,

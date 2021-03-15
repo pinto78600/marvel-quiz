@@ -15,7 +15,6 @@ const Countdown = ({countdown, setQuizEnd }) => {
             setQuizEnd(true)
           }, 500) 
           return  <div>Trop tard!</div> ;
-          
         }
       
         return (
@@ -23,7 +22,7 @@ const Countdown = ({countdown, setQuizEnd }) => {
             <div className="value">{remainingTime}</div>
           </div>
         );
-      };
+    };
 
     
     return(
@@ -49,8 +48,6 @@ const Countdown = ({countdown, setQuizEnd }) => {
             <Loader />
         )
     )
-
-  
 }
 
 export default Countdown;
